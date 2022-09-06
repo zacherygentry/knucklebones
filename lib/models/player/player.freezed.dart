@@ -20,12 +20,12 @@ Player _$PlayerFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Player {
-  String get id => throw _privateConstructorUsedError;
-  List<int?> get column1 => throw _privateConstructorUsedError;
-  List<int?> get column2 => throw _privateConstructorUsedError;
-  List<int?> get column3 => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  List<int> get column1 => throw _privateConstructorUsedError;
+  List<int> get column2 => throw _privateConstructorUsedError;
+  List<int> get column3 => throw _privateConstructorUsedError;
   @JsonKey(name: 'current_roll')
-  int? get currentRoll => throw _privateConstructorUsedError;
+  int get currentRoll => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,11 +37,11 @@ abstract class $PlayerCopyWith<$Res> {
   factory $PlayerCopyWith(Player value, $Res Function(Player) then) =
       _$PlayerCopyWithImpl<$Res>;
   $Res call(
-      {String id,
-      List<int?> column1,
-      List<int?> column2,
-      List<int?> column3,
-      @JsonKey(name: 'current_roll') int? currentRoll});
+      {String? id,
+      List<int> column1,
+      List<int> column2,
+      List<int> column3,
+      @JsonKey(name: 'current_roll') int currentRoll});
 }
 
 /// @nodoc
@@ -64,23 +64,23 @@ class _$PlayerCopyWithImpl<$Res> implements $PlayerCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       column1: column1 == freezed
           ? _value.column1
           : column1 // ignore: cast_nullable_to_non_nullable
-              as List<int?>,
+              as List<int>,
       column2: column2 == freezed
           ? _value.column2
           : column2 // ignore: cast_nullable_to_non_nullable
-              as List<int?>,
+              as List<int>,
       column3: column3 == freezed
           ? _value.column3
           : column3 // ignore: cast_nullable_to_non_nullable
-              as List<int?>,
+              as List<int>,
       currentRoll: currentRoll == freezed
           ? _value.currentRoll
           : currentRoll // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ));
   }
 }
@@ -91,11 +91,11 @@ abstract class _$$_PlayerCopyWith<$Res> implements $PlayerCopyWith<$Res> {
       __$$_PlayerCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id,
-      List<int?> column1,
-      List<int?> column2,
-      List<int?> column3,
-      @JsonKey(name: 'current_roll') int? currentRoll});
+      {String? id,
+      List<int> column1,
+      List<int> column2,
+      List<int> column3,
+      @JsonKey(name: 'current_roll') int currentRoll});
 }
 
 /// @nodoc
@@ -119,23 +119,23 @@ class __$$_PlayerCopyWithImpl<$Res> extends _$PlayerCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       column1: column1 == freezed
           ? _value._column1
           : column1 // ignore: cast_nullable_to_non_nullable
-              as List<int?>,
+              as List<int>,
       column2: column2 == freezed
           ? _value._column2
           : column2 // ignore: cast_nullable_to_non_nullable
-              as List<int?>,
+              as List<int>,
       column3: column3 == freezed
           ? _value._column3
           : column3 // ignore: cast_nullable_to_non_nullable
-              as List<int?>,
+              as List<int>,
       currentRoll: currentRoll == freezed
           ? _value.currentRoll
           : currentRoll // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ));
   }
 }
@@ -145,9 +145,9 @@ class __$$_PlayerCopyWithImpl<$Res> extends _$PlayerCopyWithImpl<$Res>
 class _$_Player implements _Player {
   const _$_Player(
       {required this.id,
-      required final List<int?> column1,
-      required final List<int?> column2,
-      required final List<int?> column3,
+      required final List<int> column1,
+      required final List<int> column2,
+      required final List<int> column3,
       @JsonKey(name: 'current_roll') required this.currentRoll})
       : _column1 = column1,
         _column2 = column2,
@@ -157,31 +157,31 @@ class _$_Player implements _Player {
       _$$_PlayerFromJson(json);
 
   @override
-  final String id;
-  final List<int?> _column1;
+  final String? id;
+  final List<int> _column1;
   @override
-  List<int?> get column1 {
+  List<int> get column1 {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_column1);
   }
 
-  final List<int?> _column2;
+  final List<int> _column2;
   @override
-  List<int?> get column2 {
+  List<int> get column2 {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_column2);
   }
 
-  final List<int?> _column3;
+  final List<int> _column3;
   @override
-  List<int?> get column3 {
+  List<int> get column3 {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_column3);
   }
 
   @override
   @JsonKey(name: 'current_roll')
-  final int? currentRoll;
+  final int currentRoll;
 
   @override
   String toString() {
@@ -226,26 +226,26 @@ class _$_Player implements _Player {
 
 abstract class _Player implements Player {
   const factory _Player(
-          {required final String id,
-          required final List<int?> column1,
-          required final List<int?> column2,
-          required final List<int?> column3,
-          @JsonKey(name: 'current_roll') required final int? currentRoll}) =
+          {required final String? id,
+          required final List<int> column1,
+          required final List<int> column2,
+          required final List<int> column3,
+          @JsonKey(name: 'current_roll') required final int currentRoll}) =
       _$_Player;
 
   factory _Player.fromJson(Map<String, dynamic> json) = _$_Player.fromJson;
 
   @override
-  String get id;
+  String? get id;
   @override
-  List<int?> get column1;
+  List<int> get column1;
   @override
-  List<int?> get column2;
+  List<int> get column2;
   @override
-  List<int?> get column3;
+  List<int> get column3;
   @override
   @JsonKey(name: 'current_roll')
-  int? get currentRoll;
+  int get currentRoll;
   @override
   @JsonKey(ignore: true)
   _$$_PlayerCopyWith<_$_Player> get copyWith =>
