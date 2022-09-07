@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knucklebones/models/match/match.dart';
@@ -40,6 +42,13 @@ class Database {
         .child(matchId)
         .child('player2')
         .update(player2.toJson());
+  }
+
+  Future<void> rollDie(String matchId, bool isPlayer1) async {
+    return await _matchesRef
+        .child(matchId)
+        .child(isPlayer1 ? 'player1' : 'player2')
+        .update({'current_roll': Random().nextInt(6) + 1});
   }
 }
 
