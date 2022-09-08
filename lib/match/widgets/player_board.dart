@@ -13,11 +13,36 @@ class PlayerBoard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Stack(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Column(
           children: [
-            Text("Current Roll: ${player?.currentRoll ?? ''}"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ScoreColumn(
+                  scores: player?.column1 ?? [],
+                  columnNumber: 1,
+                  match: match,
+                ),
+                const SizedBox(width: 48),
+                ScoreColumn(
+                  scores: player?.column2 ?? [],
+                  columnNumber: 2,
+                  match: match,
+                ),
+                const SizedBox(width: 48),
+                ScoreColumn(
+                  scores: player?.column3 ?? [],
+                  columnNumber: 3,
+                  match: match,
+                ),
+              ],
+            ),
+            const SizedBox(height: 48),
+            Text(
+                "Current Roll: ${player?.currentRoll != -1 ? player?.currentRoll : ''}"),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
@@ -25,16 +50,6 @@ class PlayerBoard extends ConsumerWidget {
               },
               child: const Text('Roll'),
             ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ScoreColumn(scores: player?.column1 ?? []),
-            const SizedBox(width: 48),
-            ScoreColumn(scores: player?.column2 ?? []),
-            const SizedBox(width: 48),
-            ScoreColumn(scores: player?.column3 ?? []),
           ],
         ),
       ],

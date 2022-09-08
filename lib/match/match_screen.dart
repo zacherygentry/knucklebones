@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knucklebones/match/match_screen_controller.dart';
+import 'package:knucklebones/match/widgets/opponent_board.dart';
 import 'package:knucklebones/match/widgets/player_board.dart';
 import 'package:knucklebones/models/match/match.dart';
 import 'package:knucklebones/services/authentication.dart';
@@ -35,18 +36,17 @@ class MatchScreen extends ConsumerWidget {
                     matchScreenController.user.uid != match.player2?.id) {
                   matchScreenController.joinMatch();
                 }
-
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: PlayerBoard(
+                      child: OpponentBoard(
                         player: matchScreenController.otherPlayer(match),
                         match: match,
                       ),
                     ),
                     Text(
-                      'Current Turn: ${match.state == GameState.player1 ? 'Player 1' : 'Player 2'}',
+                      '${matchScreenController.isPlayer1(match) && match.state == GameState.player1 ? 'Your' : 'Opponent\'s'} Turn',
                     ),
                     Expanded(
                       child: PlayerBoard(

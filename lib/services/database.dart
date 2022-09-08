@@ -50,6 +50,45 @@ class Database {
         .child(isPlayer1 ? 'player1' : 'player2')
         .update({'current_roll': Random().nextInt(6) + 1});
   }
+
+  Future<void> addRollToColumn(
+      String matchId, int roll, int columnNumber, bool isPlayer1) async {
+    final playerSnapshot =
+        _matchesRef.child(matchId).child(isPlayer1 ? 'player1' : 'player2');
+
+    final player = Player.fromJson(
+        (await playerSnapshot.get()).value as Map<String, dynamic>);
+
+    List<int> column;
+    if (columnNumber == 1) {
+      column = player.column1.toList();
+    } else if (columnNumber == 2) {
+      column = player.column2.toList();
+    } else {
+      column = player.column3.toList();
+    }
+
+    for (var i = 0; i < column.length; i++) {
+      if (column[i] == -1) {
+        column[i] = roll;
+        break;
+      }
+    }
+
+    final newPlayer = player.copyWith(
+      column1: columnNumber == 1 ? column : player.column1,
+      column2: columnNumber == 2 ? column : player.column2,
+      column3: columnNumber == 3 ? column : player.column3,
+      currentRoll: -1,
+    );
+
+    return await _matchesRef
+        .child(matchId)
+        .child(isPlayer1 ? 'player1' : 'player2')
+        .update(
+          newPlayer.toJson(),
+        );
+  }
 }
 
 final databaseProvider = Provider((ref) => Database());

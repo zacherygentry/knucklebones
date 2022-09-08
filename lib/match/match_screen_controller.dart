@@ -43,6 +43,12 @@ class MatchScreenController {
     final database = _ref.watch(databaseProvider);
     return database.rollDie(matchId, isPlayer1(match));
   }
+
+  Future<void> addRollToColumn(Match match, int roll, int columnNumber) {
+    final database = _ref.watch(databaseProvider);
+    return database.addRollToColumn(
+        matchId, roll, columnNumber, isPlayer1(match));
+  }
 }
 
 final matchScreenControllerProvider =
