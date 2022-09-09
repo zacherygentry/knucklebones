@@ -53,21 +53,37 @@ class Database {
 
   Future<void> addRollToColumn(
       String matchId, int roll, int columnNumber, bool isPlayer1) async {
+    if (roll == -1) {
+      return;
+    }
+
     final playerSnapshot =
         _matchesRef.child(matchId).child(isPlayer1 ? 'player1' : 'player2');
+    final opponentSnapshot =
+        _matchesRef.child(matchId).child(isPlayer1 ? 'player2' : 'player1');
 
     final player = Player.fromJson(
         (await playerSnapshot.get()).value as Map<String, dynamic>);
+    final opponent = Player.fromJson(
+        (await opponentSnapshot.get()).value as Map<String, dynamic>);
 
     List<int> column;
+    List<int> opponentColumn;
     if (columnNumber == 1) {
       column = player.column1.toList();
+      opponentColumn = opponent.column1.toList();
     } else if (columnNumber == 2) {
       column = player.column2.toList();
+      opponentColumn = opponent.column2.toList();
     } else {
       column = player.column3.toList();
+      opponentColumn = opponent.column3.toList();
+    }
+    if (column.where((n) => n != -1).length == 3) {
+      return;
     }
 
+    opponentColumn = opponentColumn.map((n) => n == roll ? -1 : n).toList();
     for (var i = 0; i < column.length; i++) {
       if (column[i] == -1) {
         column[i] = roll;
@@ -82,12 +98,39 @@ class Database {
       currentRoll: -1,
     );
 
-    return await _matchesRef
+    final newOpponent = opponent.copyWith(
+      column1: columnNumber == 1 ? opponentColumn : opponent.column1,
+      column2: columnNumber == 2 ? opponentColumn : opponent.column2,
+      column3: columnNumber == 3 ? opponentColumn : opponent.column3,
+    );
+
+    await _matchesRef
         .child(matchId)
         .child(isPlayer1 ? 'player1' : 'player2')
         .update(
           newPlayer.toJson(),
         );
+    await _matchesRef
+        .child(matchId)
+        .child(isPlayer1 ? 'player2' : 'player1')
+        .update(
+          newOpponent.toJson(),
+        );
+
+    await nextTurn(matchId);
+  }
+
+  Future<void> nextTurn(String matchId) async {
+    final matchSnapshot = await _matchesRef.child(matchId).get();
+    final match = Match.fromJson(matchSnapshot.value as Map<String, dynamic>);
+
+    final newMatch = match.copyWith(
+      state: match.state == GameState.player1
+          ? GameState.player2
+          : GameState.player1,
+    );
+
+    return await _matchesRef.child(matchId).update(newMatch.toJson());
   }
 }
 

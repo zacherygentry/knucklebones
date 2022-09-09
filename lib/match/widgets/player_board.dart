@@ -13,6 +13,8 @@ class PlayerBoard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final matchScreenController = ref.watch(matchScreenControllerProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -45,9 +47,15 @@ class PlayerBoard extends ConsumerWidget {
                 "Current Roll: ${player?.currentRoll != -1 ? player?.currentRoll : ''}"),
             const SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () {
-                ref.read(matchScreenControllerProvider).rollDie(match);
-              },
+              onPressed: matchScreenController.isPlayersTurn(match) &&
+                      match.player2 != null &&
+                      (matchScreenController.isPlayer1(match)
+                          ? match.player1!.currentRoll == -1
+                          : match.player2!.currentRoll == -1)
+                  ? () {
+                      ref.read(matchScreenControllerProvider).rollDie(match);
+                    }
+                  : null,
               child: const Text('Roll'),
             ),
           ],

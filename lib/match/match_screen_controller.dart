@@ -39,6 +39,11 @@ class MatchScreenController {
     return user.uid == match.player1?.id;
   }
 
+  bool isPlayersTurn(Match match) {
+    return (isPlayer1(match) && match.state == GameState.player1) ||
+        (!isPlayer1(match) && match.state == GameState.player2);
+  }
+
   Future<void> rollDie(Match match) {
     final database = _ref.watch(databaseProvider);
     return database.rollDie(matchId, isPlayer1(match));

@@ -11,6 +11,12 @@ class OpponentBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (player == null) {
+      return const Text(
+        "Waiting for opponent...",
+        style: TextStyle(fontSize: 24),
+      );
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
