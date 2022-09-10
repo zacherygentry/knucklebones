@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knucklebones/match/match_screen_controller.dart';
 import 'package:knucklebones/models/match/match.dart';
 import 'package:knucklebones/util/intersperse.dart';
-import 'package:knucklebones/util/score.dart';
 
 class ScoreColumn extends ConsumerWidget {
   const ScoreColumn({
@@ -19,20 +18,21 @@ class ScoreColumn extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final matchScreenController = ref.watch(matchScreenControllerProvider);
-    final int columnScore = calculateColumnScore(scores);
 
     return Column(
       children: [
-        Text('${columnScore != 0 ? columnScore : ''}'),
-        const SizedBox(height: 8),
         InkWell(
-          onTap: () => matchScreenController.addRollToColumn(
-            match,
-            matchScreenController.isPlayer1(match)
-                ? match.player1!.currentRoll
-                : match.player2!.currentRoll,
-            columnNumber,
-          ),
+          onTap: matchScreenController
+                      .myPlayerColumn(match, columnNumber)
+                      .where((n) => n != -1)
+                      .length ==
+                  3
+              ? null
+              : () => matchScreenController.addRollToColumn(
+                    match,
+                    matchScreenController.myPlayer(match)!.currentRoll,
+                    columnNumber,
+                  ),
           child: Column(
             children: [
               ...intersperse(

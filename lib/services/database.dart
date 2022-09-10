@@ -117,7 +117,13 @@ class Database {
           newOpponent.toJson(),
         );
 
-    await nextTurn(matchId);
+    if (newPlayer.column1.where((n) => n != -1).length == 3 &&
+        newPlayer.column2.where((n) => n != -1).length == 3 &&
+        newPlayer.column3.where((n) => n != -1).length == 3) {
+      await _matchesRef.child(matchId).update({'state': GameState.finished});
+    } else {
+      await nextTurn(matchId);
+    }
   }
 
   Future<void> nextTurn(String matchId) async {

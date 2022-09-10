@@ -35,6 +35,18 @@ class MatchScreenController {
     return user.uid == match.player1?.id ? match.player2 : match.player1;
   }
 
+  List<int> myPlayerColumn(Match match, int columnNumber) {
+    final player = myPlayer(match);
+    if (columnNumber == 1) {
+      return player!.column1;
+    } else if (columnNumber == 2) {
+      return player!.column2;
+    } else if (columnNumber == 3) {
+      return player!.column3;
+    }
+    return [];
+  }
+
   bool isPlayer1(Match match) {
     return user.uid == match.player1?.id;
   }

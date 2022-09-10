@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:knucklebones/match/match_screen_controller.dart';
 import 'package:knucklebones/match/widgets/opponent_board.dart';
 import 'package:knucklebones/match/widgets/player_board.dart';
-import 'package:knucklebones/models/match/match.dart';
 import 'package:knucklebones/services/authentication.dart';
 import 'package:knucklebones/services/database.dart';
 
@@ -45,8 +44,11 @@ class MatchScreen extends ConsumerWidget {
                         match: match,
                       ),
                     ),
-                    Text(
-                      '${matchScreenController.isPlayer1(match) && match.state == GameState.player1 ? 'Your' : 'Opponent\'s'} Turn',
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: Text(
+                        '${matchScreenController.isPlayersTurn(match) ? 'Your' : 'Opponent\'s'} Turn',
+                      ),
                     ),
                     Expanded(
                       child: PlayerBoard(

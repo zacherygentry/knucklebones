@@ -1,3 +1,5 @@
+import 'package:knucklebones/models/player/player.dart';
+
 int calculateColumnScore(List<int> scores) {
   int columnScore = 0;
   Map<int, int> scoreMap = {};
@@ -25,4 +27,12 @@ int calculateColumnScore(List<int> scores) {
   }
 
   return columnScore;
+}
+
+int calculateTotalScore(Player player) {
+  int totalScore = 0;
+  totalScore += calculateColumnScore(player.column1);
+  totalScore += calculateColumnScore(player.column2);
+  totalScore += calculateColumnScore(player.column3);
+  return totalScore;
 }

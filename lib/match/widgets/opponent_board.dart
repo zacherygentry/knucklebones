@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knucklebones/match/widgets/score_column.dart';
+import 'package:knucklebones/match/widgets/total_score_text.dart';
 import 'package:knucklebones/models/match/match.dart';
 import 'package:knucklebones/models/player/player.dart';
 
@@ -17,26 +18,33 @@ class OpponentBoard extends StatelessWidget {
         style: TextStyle(fontSize: 24),
       );
     }
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ScoreColumn(
-          scores: player?.column1 ?? [],
-          columnNumber: 1,
-          match: match,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ScoreColumn(
+              scores: player?.column1 ?? [],
+              columnNumber: 1,
+              match: match,
+            ),
+            const SizedBox(width: 48),
+            ScoreColumn(
+              scores: player?.column2 ?? [],
+              columnNumber: 2,
+              match: match,
+            ),
+            const SizedBox(width: 48),
+            ScoreColumn(
+              scores: player?.column3 ?? [],
+              columnNumber: 3,
+              match: match,
+            ),
+          ],
         ),
-        const SizedBox(width: 48),
-        ScoreColumn(
-          scores: player?.column2 ?? [],
-          columnNumber: 2,
-          match: match,
-        ),
-        const SizedBox(width: 48),
-        ScoreColumn(
-          scores: player?.column3 ?? [],
-          columnNumber: 3,
-          match: match,
-        ),
+        const SizedBox(height: 8),
+        TotalScoreText(player: player!),
       ],
     );
   }
