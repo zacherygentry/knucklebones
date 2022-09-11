@@ -4,12 +4,12 @@ import 'package:knucklebones/util/score.dart';
 
 class TotalScoreText extends StatelessWidget {
   const TotalScoreText({Key? key, required this.player}) : super(key: key);
-  final Player player;
+  final Player? player;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      "Total Score: ${calculateTotalScore(player)}",
+      "Total Score: ${player == null ? 0 : calculateTotalScore(player!)}",
       style: const TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.bold,

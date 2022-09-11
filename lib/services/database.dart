@@ -57,27 +57,24 @@ class Database {
       return;
     }
 
-    final playerSnapshot =
-        _matchesRef.child(matchId).child(isPlayer1 ? 'player1' : 'player2');
-    final opponentSnapshot =
-        _matchesRef.child(matchId).child(isPlayer1 ? 'player2' : 'player1');
+    final matchSnapshot = await _matchesRef.child(matchId).once();
+    final match =
+        Match.fromJson(matchSnapshot.snapshot.value as Map<String, dynamic>);
 
-    final player = Player.fromJson(
-        (await playerSnapshot.get()).value as Map<String, dynamic>);
-    final opponent = Player.fromJson(
-        (await opponentSnapshot.get()).value as Map<String, dynamic>);
+    final player = isPlayer1 ? match.player1 : match.player2;
+    final opponent = isPlayer1 ? match.player2 : match.player1;
 
     List<int> column;
     List<int> opponentColumn;
     if (columnNumber == 1) {
-      column = player.column1.toList();
-      opponentColumn = opponent.column1.toList();
+      column = player?.column1.toList() ?? [-1, -1, -1];
+      opponentColumn = opponent?.column1.toList() ?? [-1, -1, -1];
     } else if (columnNumber == 2) {
-      column = player.column2.toList();
-      opponentColumn = opponent.column2.toList();
+      column = player?.column2.toList() ?? [-1, -1, -1];
+      opponentColumn = opponent?.column2.toList() ?? [-1, -1, -1];
     } else {
-      column = player.column3.toList();
-      opponentColumn = opponent.column3.toList();
+      column = player?.column3.toList() ?? [-1, -1, -1];
+      opponentColumn = opponent?.column3.toList() ?? [-1, -1, -1];
     }
     if (column.where((n) => n != -1).length == 3) {
       return;
@@ -91,52 +88,41 @@ class Database {
       }
     }
 
-    final newPlayer = player.copyWith(
+    final newPlayer = player?.copyWith(
       column1: columnNumber == 1 ? column : player.column1,
       column2: columnNumber == 2 ? column : player.column2,
       column3: columnNumber == 3 ? column : player.column3,
       currentRoll: -1,
     );
 
-    final newOpponent = opponent.copyWith(
+    final newOpponent = opponent?.copyWith(
       column1: columnNumber == 1 ? opponentColumn : opponent.column1,
       column2: columnNumber == 2 ? opponentColumn : opponent.column2,
       column3: columnNumber == 3 ? opponentColumn : opponent.column3,
     );
 
-    await _matchesRef
-        .child(matchId)
-        .child(isPlayer1 ? 'player1' : 'player2')
-        .update(
-          newPlayer.toJson(),
-        );
-    await _matchesRef
-        .child(matchId)
-        .child(isPlayer1 ? 'player2' : 'player1')
-        .update(
-          newOpponent.toJson(),
-        );
-
-    if (newPlayer.column1.where((n) => n != -1).length == 3 &&
-        newPlayer.column2.where((n) => n != -1).length == 3 &&
-        newPlayer.column3.where((n) => n != -1).length == 3) {
-      await _matchesRef.child(matchId).update({'state': GameState.finished});
-    } else {
-      await nextTurn(matchId);
-    }
-  }
-
-  Future<void> nextTurn(String matchId) async {
-    final matchSnapshot = await _matchesRef.child(matchId).get();
-    final match = Match.fromJson(matchSnapshot.value as Map<String, dynamic>);
-
-    final newMatch = match.copyWith(
-      state: match.state == GameState.player1
-          ? GameState.player2
-          : GameState.player1,
+    Match newMatch = match.copyWith(
+      player1: isPlayer1 ? newPlayer : newOpponent,
+      player2: isPlayer1 ? newOpponent : newPlayer,
     );
 
-    return await _matchesRef.child(matchId).update(newMatch.toJson());
+    if (newPlayer?.column1.where((n) => n != -1).length == 3 &&
+        newPlayer?.column2.where((n) => n != -1).length == 3 &&
+        newPlayer?.column3.where((n) => n != -1).length == 3) {
+      // Game is over
+      newMatch = newMatch.copyWith(
+        state: GameState.finished,
+      );
+    } else {
+      // Go to next turn
+      newMatch = newMatch.copyWith(
+        state: match.state == GameState.player1
+            ? GameState.player2
+            : GameState.player1,
+      );
+    }
+
+    await _matchesRef.child(matchId).update(newMatch.toJson());
   }
 }
 

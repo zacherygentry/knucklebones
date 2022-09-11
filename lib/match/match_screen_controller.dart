@@ -38,13 +38,13 @@ class MatchScreenController {
   List<int> myPlayerColumn(Match match, int columnNumber) {
     final player = myPlayer(match);
     if (columnNumber == 1) {
-      return player!.column1;
+      return player?.column1 ?? [-1, -1, -1];
     } else if (columnNumber == 2) {
-      return player!.column2;
+      return player?.column2 ?? [-1, -1, -1];
     } else if (columnNumber == 3) {
-      return player!.column3;
+      return player?.column3 ?? [-1, -1, -1];
     }
-    return [];
+    return [-1, -1, -1];
   }
 
   bool isPlayer1(Match match) {

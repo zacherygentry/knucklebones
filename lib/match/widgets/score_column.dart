@@ -10,10 +10,12 @@ class ScoreColumn extends ConsumerWidget {
     required this.scores,
     required this.columnNumber,
     required this.match,
+    this.clickable = true,
   }) : super(key: key);
   final List<int> scores;
   final Match match;
   final int columnNumber;
+  final bool clickable;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,11 +24,13 @@ class ScoreColumn extends ConsumerWidget {
     return Column(
       children: [
         InkWell(
-          onTap: matchScreenController
-                      .myPlayerColumn(match, columnNumber)
-                      .where((n) => n != -1)
-                      .length ==
-                  3
+          onTap: !clickable ||
+                  matchScreenController.myPlayer(match)?.currentRoll == -1 ||
+                  matchScreenController
+                          .myPlayerColumn(match, columnNumber)
+                          .where((n) => n != -1)
+                          .length ==
+                      3
               ? null
               : () => matchScreenController.addRollToColumn(
                     match,

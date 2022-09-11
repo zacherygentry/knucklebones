@@ -15,13 +15,13 @@ class PlayerBoard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final matchScreenController = ref.watch(matchScreenControllerProvider);
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        TotalScoreText(player: player!),
+        TotalScoreText(player: player),
         const SizedBox(height: 8),
         Row(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ScoreColumn(

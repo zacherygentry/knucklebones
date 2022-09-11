@@ -4,7 +4,14 @@ import 'package:knucklebones/models/player/player.dart';
 part 'match.freezed.dart';
 part 'match.g.dart';
 
-enum GameState { player1, player2, finished }
+enum GameState {
+  @JsonValue('player1')
+  player1,
+  @JsonValue('player2')
+  player2,
+  @JsonValue('finished')
+  finished
+}
 
 @freezed
 class Match with _$Match {

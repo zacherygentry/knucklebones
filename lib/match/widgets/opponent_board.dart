@@ -13,9 +13,11 @@ class OpponentBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (player == null) {
-      return const Text(
-        "Waiting for opponent...",
-        style: TextStyle(fontSize: 24),
+      return const Center(
+        child: Text(
+          "Waiting for opponent...",
+          style: TextStyle(fontSize: 24),
+        ),
       );
     }
     return Column(
@@ -28,18 +30,21 @@ class OpponentBoard extends StatelessWidget {
               scores: player?.column1 ?? [],
               columnNumber: 1,
               match: match,
+              clickable: false,
             ),
             const SizedBox(width: 48),
             ScoreColumn(
               scores: player?.column2 ?? [],
               columnNumber: 2,
               match: match,
+              clickable: false,
             ),
             const SizedBox(width: 48),
             ScoreColumn(
               scores: player?.column3 ?? [],
               columnNumber: 3,
               match: match,
+              clickable: false,
             ),
           ],
         ),

@@ -17,10 +17,12 @@ class MatchScreen extends ConsumerWidget {
   final String matchId;
 
   String statusText(
-      Match match, Player myPlayer, Player otherPlayer, bool isPlayersTurn) {
-    if (match.state == GameState.finished) {
+      Match match, Player? myPlayer, Player? otherPlayer, bool isPlayersTurn) {
+    if (match.state == GameState.finished &&
+        myPlayer != null &&
+        otherPlayer != null) {
       if (calculateTotalScore(myPlayer) > calculateTotalScore(otherPlayer)) {
-        return "You won!";
+        return "🎉 You won! 🎉";
       } else if (calculateTotalScore(myPlayer) <
           calculateTotalScore(otherPlayer)) {
         return "You lost!";
@@ -67,9 +69,13 @@ class MatchScreen extends ConsumerWidget {
                       child: Text(
                         statusText(
                           match,
-                          matchScreenController.myPlayer(match)!,
-                          matchScreenController.otherPlayer(match)!,
+                          matchScreenController.myPlayer(match),
+                          matchScreenController.otherPlayer(match),
                           matchScreenController.isPlayersTurn(match),
+                        ),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
